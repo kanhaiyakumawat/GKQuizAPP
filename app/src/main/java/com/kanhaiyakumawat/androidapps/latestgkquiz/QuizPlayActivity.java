@@ -2,6 +2,7 @@ package com.kanhaiyakumawat.androidapps.latestgkquiz;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
@@ -34,6 +35,8 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
     List<QuestionType> question_types;
     LinearLayout linear_layout;
     List<QuestionDetails> question_list;
+    List<QuestionDetails> attempted_list = new LinkedList<QuestionDetails>();
+
     //private RelativeLayout.LayoutParams lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     private LayoutParams lpButton = new LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     private static int curr_question_id = 0;
@@ -75,19 +78,17 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                 op++;
             }
             Button checkAnswerButton = new Button(getApplicationContext());
-            checkAnswerButton.setId(getResources().getInteger(R.integer.check_answer_button_id));
-            checkAnswerButton.setText(R.string.check_answer);
+            checkAnswerButton.setId(getResources().getInteger(R.integer.next_question_button_id));
+            checkAnswerButton.setText(R.string.next_question);
             checkAnswerButton.setOnClickListener(this);
             checkAnswerButton.setBackgroundColor(getResources().getColor(
                     R.color.Chocolate));
             checkAnswerButton.setLayoutParams(lpButton);
+            checkAnswerButton.setBackground(getResources().getDrawable(R.drawable.button_background));
             linear_layout.addView(checkAnswerButton);
         } else {
             curr_question_id = 0;
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Your are done with all the questions!! check your answers",
-                    Toast.LENGTH_LONG).show();
+
             linear_layout.removeAllViews();
             TextView total_attempted_question = new TextView(
                     getApplicationContext());
@@ -129,6 +130,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             exit.setOnClickListener(this);
             exit.setBackgroundColor(getResources().getColor(R.color.Chocolate));
             exit.setLayoutParams(lpButton);
+            exit.setBackground(getResources().getDrawable(R.drawable.button_background));
             linear_layout.addView(score);
             linear_layout.addView(total_attempted_question);
             linear_layout.addView(total_answered_fully_correct);
@@ -155,7 +157,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
         if (arg0.getId() == getResources().getInteger(R.integer.start_quiz_button_id)) {
             List<String> topics = new ArrayList<String>();
             for (int i = 0; i < question_types.size(); i++) {
-                Log.v(LOG, "checkin each checkbox");
+                Log.v(LOG, "checking each checkbox");
                 CheckBox cb = (CheckBox) findViewById(i + 1);
                 if (cb.isChecked()) {
                     Log.v(LOG, " CheckBox is selected ");
@@ -186,12 +188,14 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                 Log.v(LOG, " no topics selected");
             }
 
-        } else if (arg0.getId() == getResources().getInteger(R.integer.check_answer_button_id)) {
+        } else if (arg0.getId() == getResources().getInteger(R.integer.next_question_button_id)){
             boolean isCorrect = false;
             boolean isWrong = false;
+            QuestionDetails curr_question = question_list.get(curr_question_id);
             for (int i = 0; i < num_of_options; i++) {
                 CheckBox cb = (CheckBox) findViewById(i + 1);
                 if (cb.isChecked()) {
+                    curr_question.getOptionDetails().get(i).setAttempted(true);
                     Log.v(LOG,
                             " CheckBox is checked "
                                     + cb.getText()
@@ -223,41 +227,26 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             }
             QuestionDetails question = question_list.get(curr_question_id);
             question.setUserAttempts(question.getUserAttempts() + 1);
+            attempted_list.add(curr_question);
             if (isCorrect && isWrong == false) {
                 num_of_questions_answered_fully_correct++;
 
                 question.setSuccessfulAttempts(question.getSuccessfulAttempts() + 1);
-                Toast.makeText(getApplicationContext(),
-                        "Awesome!!! You got it right!!", Toast.LENGTH_LONG)
-                        .show();
             } else if (isCorrect && isWrong == true) {
                 num_of_questions_answered_partially_correct++;
-                Toast.makeText(getApplicationContext(),
-                        "You Partially answered correctly!!", Toast.LENGTH_LONG)
-                        .show();
+
             } else {
                 num_of_questions_answered_wrong++;
-                Toast.makeText(getApplicationContext(), "Its Incorrect!!",
-                        Toast.LENGTH_LONG).show();
             }
             DatabaseHelper db = DatabaseHelper
                     .getInstance(getApplicationContext());
             db.updateUserAttempts(question);
 
-            Button check_answer_button = (Button) findViewById(getResources().getInteger(R.integer.check_answer_button_id));
+            Button check_answer_button = (Button) findViewById(getResources().getInteger(R.integer.next_question_button_id));
             linear_layout.removeView(check_answer_button);
-            Button next_question_button = new Button(getApplicationContext());
-            next_question_button.setText("Next Question");
-            next_question_button.setId(getResources().getInteger(R.integer.next_question_button_id));
-            next_question_button.setOnClickListener(this);
-            next_question_button.setBackgroundColor(getResources().getColor(
-                    R.color.Chocolate));
-            next_question_button.setLayoutParams(lpButton);
-            linear_layout.addView(next_question_button);
-        } else if (arg0.getId() == getResources().getInteger(R.integer.next_question_button_id)) {
             curr_question_id++;
             display_question();
-        } else if (arg0.getId() == getResources().getInteger(R.integer.exit_quiz_button_id)) {
+        }else if (arg0.getId() == getResources().getInteger(R.integer.exit_quiz_button_id)) {
             num_of_questions_attempted = 0;
             num_of_questions_answered_fully_correct = 0;
             num_of_questions_answered_partially_correct = 0;
@@ -303,6 +292,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             startQuizButton.setBackgroundColor(getResources().getColor(
                     R.color.Chocolate));
             startQuizButton.setLayoutParams(lpButton);
+            startQuizButton.setBackground(getResources().getDrawable(R.drawable.button_background));
             linear_layout.addView(startQuizButton);
             AdView adView = (AdView) this.findViewById(R.id.adView);
             adView.setAdListener(new MyAdListener());

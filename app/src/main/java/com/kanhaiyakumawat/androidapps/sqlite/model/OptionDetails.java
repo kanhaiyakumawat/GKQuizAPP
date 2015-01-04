@@ -9,7 +9,9 @@ public class OptionDetails {
 	private long optionId;
 	private long questionId;
 	private String text;
-	boolean isAnswer;
+	private boolean isAnswer;
+    private boolean isAttempted;
+
 	public long getId() {
 		return id;
 	}
@@ -52,4 +54,13 @@ public class OptionDetails {
 		}
 		return true;
 	}
+
+    public boolean isAttempted() {
+        return isAttempted;
+    }
+
+    public void setAttempted(boolean isAttempted) {
+        this.isAttempted = isAttempted;
+    }
+
 }
