@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/android_green"
+    android:orientation="vertical"
+    tools:context="com.kanhaiyakumawat.androidapps.latestgkquiz.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:id="@+id/home_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/android_green"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/adView">
+
+        <Button
+            android:id="@+id/buttonPlayQuiz"
+            android:layout_width="309dp"
+            android:layout_height="81dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:onClick=""
+            android:padding="10dp"
+            android:text="@string/play_quiz_string"
+            android:textStyle="italic"
+            android:typeface="sans"
+            android:background="@drawable/button_background"
+            style="@android:style/Animation" />
+        <Button
+            android:id="@+id/Practice"
+            android:layout_width="291dp"
+            android:layout_height="62dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:onClick=""
+            android:padding="10dp"
+            android:text="@string/practice_quiz_text"
+            android:textStyle="italic"
+            android:typeface="sans" />
+
+        <Button
+            android:id="@+id/rapid_fire_round_button_id"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:padding="8dp"
+            android:text="@string/rapid_fire_round_text" />
+        <Button
+            android:id="@+id/check_score_button_id"
+            android:layout_width="291dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:padding="8dp"
+            android:text="@string/check_your_previous_score" />
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="269dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:text="@string/settings_button_text" />
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/my_unit_id"/>
+
+</RelativeLayout>

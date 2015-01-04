@@ -1,0 +1,9 @@
+
+    <resources xmlns:android="http://schemas.android.com/apk/res/android">
+        <integer name="maximum_results">5</integer>
+        <integer name="max_default_questions_in_quiz">10</integer>
+        <integer name="start_quiz_button_id">100000000</integer>
+        <integer name="check_answer_button_id">100000001</integer>
+        <integer name="next_question_button_id">100000003</integer>
+        <integer name="exit_quiz_button_id">100000004</integer>
+    </resources>

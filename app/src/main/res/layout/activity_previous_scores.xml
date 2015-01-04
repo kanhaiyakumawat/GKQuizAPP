@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/previous_scores"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/android_green"
+    android:orientation="vertical"
+    tools:context="com.kanhaiyakumawat.androidapps.gkquiz.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <TableLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:background="@color/android_green"
+        android:orientation="vertical"
+        tools:context="com.kanhaiyakumawat.androidapps.gkquiz.PreviousScores"
+        tools:ignore="MergeRootFrame" >
+    </TableLayout>
+
+    <LinearLayout
+        android:id="@+id/afterScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/container"
+        android:orientation="vertical"
+        android:textAlignment="gravity" >
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/my_unit_id" />
+
+</RelativeLayout>

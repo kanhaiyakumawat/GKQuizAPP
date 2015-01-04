@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GK Quiz</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="select_question_type">Please Select Topics</string>
+    <string name="start_quiz">Start Quiz</string>
+    <string name="play_quiz_string">Play Quiz</string>
+    <string name="check_your_previous_score">Previous Scores</string>
+    <string name="settings_button_text">Settings</string>
+    <string name="check_answer">Check Answer</string>
+    <string name="next_question">Next Question</string>
+    <string name="exit_quiz">Exit This Quiz</string>
+    <string name="first_time_data_load">first_time_data_load</string>
+    <string name="previous_results">previous_results</string>
+    <string name="simple_date_format">yyyy-MM-dd HH:mm:ss</string>
+    <string name="no_scores_available">No Scores Available. Play Now!!!</string>
+    <string name="title_activity_previous_scores">Previous Scores</string>
+    <string name="exit">Return</string>
+    <string name="my_unit_id">ca-app-pub-6278043188029925/5459730780</string>
+    <string name="last_update_time">last_update_time</string>
+    <string name="maximum_scores_count">maximum_scores_count</string>
+    <string name="question_update_frequency">question_update_frequency</string>
+    <string name="number_of_questions_in_quiz">number_of_questions_in_quiz</string>
+    <string name="rapid_fire_round_text">Rapid Fire Round</string>
+    <string name="practice_quiz_text">Practice</string>
+    <string name="title_activity_practice">PracticeActivity</string>
+
+</resources>
