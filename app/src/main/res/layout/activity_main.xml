@@ -4,7 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/android_green"
+    android:background="@drawable/pyramids_image"
     android:orientation="vertical"
     tools:context="com.kanhaiyakumawat.androidapps.latestgkquiz.MainActivity"
     tools:ignore="MergeRootFrame" >
@@ -13,16 +13,16 @@
         android:id="@+id/home_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/android_green"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/adView">
+        android:layout_above="@+id/adView"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/buttonPlayQuiz"
-            android:layout_width="309dp"
-            android:layout_height="81dp"
+            android:layout_width="274dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -33,11 +33,12 @@
             android:textStyle="italic"
             android:typeface="sans"
             android:background="@drawable/button_background"
-            style="@android:style/Animation" />
+            style="@android:style/Animation"
+            android:layout_weight="0.16" />
         <Button
             android:id="@+id/Practice"
-            android:layout_width="291dp"
-            android:layout_height="62dp"
+            android:layout_width="274dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -47,11 +48,12 @@
             android:padding="10dp"
             android:text="@string/practice_quiz_text"
             android:textStyle="italic"
-            android:typeface="sans" />
+            android:typeface="sans"
+            android:layout_weight="0.16" />
 
         <Button
             android:id="@+id/rapid_fire_round_button_id"
-            android:layout_width="283dp"
+            android:layout_width="274dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
@@ -59,10 +61,11 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/button_background"
             android:padding="8dp"
-            android:text="@string/rapid_fire_round_text" />
+            android:text="@string/rapid_fire_round_text"
+            android:layout_weight="0.16" />
         <Button
             android:id="@+id/check_score_button_id"
-            android:layout_width="291dp"
+            android:layout_width="274dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
@@ -70,17 +73,19 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/button_background"
             android:padding="8dp"
-            android:text="@string/check_your_previous_score" />
+            android:text="@string/check_your_previous_score"
+            android:layout_weight="0.16" />
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="269dp"
+            android:layout_width="274dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_background"
-            android:text="@string/settings_button_text" />
+            android:text="@string/settings_button_text"
+            android:layout_weight="0.16" />
 
     </LinearLayout>
 
@@ -91,6 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/my_unit_id"/>
+        ads:adUnitId="@string/my_unit_id"
+        android:background="@color/LightSteelBlue" />
 
 </RelativeLayout>

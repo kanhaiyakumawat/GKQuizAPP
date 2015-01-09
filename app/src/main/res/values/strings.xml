@@ -26,5 +26,6 @@
     <string name="rapid_fire_round_text">Rapid Fire Round</string>
     <string name="practice_quiz_text">Practice</string>
     <string name="title_activity_practice">PracticeActivity</string>
+    <string name="title_activity_rapid_fire_round">RapidFireRoundActivity</string>
 
 </resources>

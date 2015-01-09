@@ -309,7 +309,21 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 				new SyncQuestionTypeTask(getApplicationContext()).execute(null,
 						null, null);
 			}
-		}
+		}else if(v.getId() == R.id.rapid_fire_round_button_id)
+        {
+            SharedPreferences preferences = PreferenceManager
+                    .getDefaultSharedPreferences(getApplicationContext());
+            String key = getResources()
+                    .getString(R.string.first_time_data_load);
+            boolean first_time_loaded = preferences.getBoolean(key, false);
+            if (first_time_loaded) {
+                Intent intent = new Intent(this, RapidFireRoundActivity.class);
+                this.startActivity(intent);
+            } else {
+                new SyncQuestionTypeTask(getApplicationContext()).execute(null,
+                        null, null);
+            }
+        }
 
 	}
 
@@ -328,6 +342,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			v = findViewById(R.id.settings_button);
 			v.setOnClickListener(this);
             v = findViewById(R.id.Practice);
+            v.setOnClickListener(this);
+            v = findViewById(R.id.rapid_fire_round_button_id);
             v.setOnClickListener(this);
 			SharedPreferences preferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());

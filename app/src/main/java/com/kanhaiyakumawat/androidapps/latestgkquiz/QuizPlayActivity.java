@@ -1,26 +1,23 @@
 package com.kanhaiyakumawat.androidapps.latestgkquiz;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -28,6 +25,11 @@ import com.kanhaiyakumawat.androidapps.sqlite.helper.DatabaseHelper;
 import com.kanhaiyakumawat.androidapps.sqlite.model.OptionDetails;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionDetails;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionType;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class QuizPlayActivity extends Activity implements OnClickListener {
 
@@ -90,40 +92,21 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             curr_question_id = 0;
 
             linear_layout.removeAllViews();
-            TextView total_attempted_question = new TextView(
-                    getApplicationContext());
-            TextView total_answered_fully_correct = new TextView(
-                    getApplicationContext());
-            TextView total_amswered_partially_correct = new TextView(
-                    getApplicationContext());
-            TextView total_answered_wrong = new TextView(
-                    getApplicationContext());
-            TextView score = new TextView(getApplicationContext());
+            ListView results = new ListView(getApplicationContext());
+            ArrayList<ResultSummaryObject> objects = new ArrayList<ResultSummaryObject>();
+            ResultSummaryObject object = new ResultSummaryObject("Total Questions", Integer.toString(num_of_questions_attempted));
+            objects.add(object);
+            object = new ResultSummaryObject("Correct Answers", Integer.toString(num_of_questions_answered_fully_correct));
+            objects.add(object);
+            object = new ResultSummaryObject("Partially Correct ", Integer.toString(num_of_questions_answered_partially_correct));
+            objects.add(object);
+            object = new ResultSummaryObject("Wrong Answers", Integer.toString(num_of_questions_answered_wrong));
+            objects.add(object);
+            ResultSummaryAdapter ResultSummaryAdapter = new ResultSummaryAdapter(this, objects);
+            results.setAdapter(ResultSummaryAdapter);
+            ResultSummaryAdapter.notifyDataSetChanged();
+            linear_layout.addView(results);
 
-            score.setText("----- Score Analysis ----");
-            score.setTextSize(16);
-            total_attempted_question.setText("Questions Attempted : "
-                    + num_of_questions_attempted);
-            total_attempted_question.setTextSize(12);
-            total_answered_fully_correct.setText("Answered fully correct : "
-                    + num_of_questions_answered_fully_correct);
-            total_answered_fully_correct.setTextSize(12);
-            total_amswered_partially_correct
-                    .setText("Answered partially correct : "
-                            + num_of_questions_answered_partially_correct);
-            total_amswered_partially_correct.setTextSize(12);
-            total_answered_wrong.setText("Answered Wrong : "
-                    + num_of_questions_answered_wrong);
-            total_answered_wrong.setTextSize(12);
-            score.setTextColor(getResources().getColor(R.color.black));
-            total_attempted_question.setTextColor(getResources().getColor(
-                    R.color.black));
-            total_answered_fully_correct.setTextColor(getResources().getColor(
-                    R.color.black));
-            total_amswered_partially_correct.setTextColor(getResources()
-                    .getColor(R.color.black));
-            total_answered_wrong.setTextColor(getResources().getColor(
-                    R.color.black));
             Button exit = new Button(getApplicationContext());
             exit.setText(R.string.exit_quiz);
             exit.setId(getResources().getInteger(R.integer.exit_quiz_button_id));
@@ -131,12 +114,25 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             exit.setBackgroundColor(getResources().getColor(R.color.Chocolate));
             exit.setLayoutParams(lpButton);
             exit.setBackground(getResources().getDrawable(R.drawable.button_background));
-            linear_layout.addView(score);
-            linear_layout.addView(total_attempted_question);
-            linear_layout.addView(total_answered_fully_correct);
-            linear_layout.addView(total_amswered_partially_correct);
-            linear_layout.addView(total_answered_wrong);
+
             linear_layout.addView(exit);
+            ListView detailResults = new ListView(getApplicationContext());
+            ArrayList<DetailedResultObject> detailedResultObjects = new ArrayList<DetailedResultObject>();
+
+            for (int i = 0; i < attempted_list.size(); i++) {
+                List<String> options = new ArrayList<String>();
+                for (int j = 0; j < attempted_list.get(i).getOptionDetails().size(); j++) {
+                    options.add(attempted_list.get(i).getOptionDetails().get(j).getText());
+                }
+                DetailedResultObject detailedResultObject = new DetailedResultObject("[Right]", attempted_list.get(i).getQuestionText(), options);
+                detailedResultObjects.add(detailedResultObject);
+            }
+            DetailedResultAdapter detailedResultAdapter = new DetailedResultAdapter(this, detailedResultObjects);
+            detailResults.setAdapter(detailedResultAdapter);
+            detailedResultAdapter.notifyDataSetChanged();
+            linear_layout.addView(detailResults);
+
+
             Result result = new Result();
             result.setDate(new Date());
             result.setFully_correct(num_of_questions_answered_fully_correct);
@@ -188,7 +184,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                 Log.v(LOG, " no topics selected");
             }
 
-        } else if (arg0.getId() == getResources().getInteger(R.integer.next_question_button_id)){
+        } else if (arg0.getId() == getResources().getInteger(R.integer.next_question_button_id)) {
             boolean isCorrect = false;
             boolean isWrong = false;
             QuestionDetails curr_question = question_list.get(curr_question_id);
@@ -246,7 +242,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             linear_layout.removeView(check_answer_button);
             curr_question_id++;
             display_question();
-        }else if (arg0.getId() == getResources().getInteger(R.integer.exit_quiz_button_id)) {
+        } else if (arg0.getId() == getResources().getInteger(R.integer.exit_quiz_button_id)) {
             num_of_questions_attempted = 0;
             num_of_questions_answered_fully_correct = 0;
             num_of_questions_answered_partially_correct = 0;
@@ -306,4 +302,177 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
         }
     }
 
+    public class ResultSummaryObject {
+
+        private String prop1;
+        private String prop2;
+
+        public ResultSummaryObject(String prop1, String prop2) {
+            this.prop1 = prop1;
+            this.prop2 = prop2;
+        }
+
+        public String getProp1() {
+            return prop1;
+        }
+
+        public String getProp2() {
+            return prop2;
+        }
+    }
+
+    public class ResultSummaryAdapter extends BaseAdapter {
+
+        private LayoutInflater inflater;
+        private ArrayList<ResultSummaryObject> objects;
+
+        private class ViewHolder {
+            TextView textView1;
+            TextView textView2;
+        }
+
+        public ResultSummaryAdapter(Context context, ArrayList<ResultSummaryObject> objects) {
+            inflater = LayoutInflater.from(context);
+            this.objects = objects;
+        }
+
+        public int getCount() {
+            return objects.size();
+        }
+
+        public ResultSummaryObject getItem(int position) {
+            return objects.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Log.v(LOG, "getView for results");
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.result_list_layout, null);
+                holder.textView1 = (TextView) convertView.findViewById(R.id.result_name);
+                holder.textView2 = (TextView) convertView.findViewById(R.id.result_value);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.textView1.setText(objects.get(position).getProp1());
+            holder.textView2.setText(objects.get(position).getProp2());
+            return convertView;
+        }
+    }
+
+    public class DetailedResultObject {
+
+        private String result;
+        private String question;
+        private List<String> options;
+
+        public DetailedResultObject(String result, String question, List<String> options) {
+            this.result = result;
+            this.question = question;
+            this.options = options;
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        public String getQuestion() {
+            return question;
+        }
+
+        public List<String> getOptions() {
+            return options;
+        }
+    }
+
+    public class DetailedResultAdapter extends BaseAdapter {
+
+        private LayoutInflater inflater;
+        private ArrayList<DetailedResultObject> objects;
+
+
+
+        private class ViewHolder {
+            TextView resultView;
+            TextView questionView;
+            List<CheckBox> options;
+        }
+
+        public DetailedResultAdapter(Context context, ArrayList<DetailedResultObject> objects) {
+            inflater = LayoutInflater.from(context);
+            this.objects = objects;
+
+        }
+
+        public int getCount() {
+            return objects.size();
+        }
+
+        public DetailedResultObject getItem(int position) {
+            return objects.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Log.v(LOG, "getView for results");
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.detailed_result_list_layout, null);
+                LinearLayout detailed_list_layout = (LinearLayout)convertView.findViewById(R.id.detailed_list_layout);
+                TextView resultView = new TextView(getApplicationContext());
+                resultView.setTextColor(getResources().getColor(R.color.black));
+                resultView.setTextSize(24);
+                resultView.setPadding(12,12,12,5);
+                TextView questionView = new TextView(getApplicationContext());
+                questionView.setTextColor(getResources().getColor(R.color.black));
+                questionView.setTextSize(24);
+                questionView.setPadding(12,12,12,12);
+                holder.questionView = questionView;
+
+
+                holder.resultView = resultView;
+                holder.options = new ArrayList<CheckBox>(objects.get(position).getOptions().size());
+                detailed_list_layout.addView(resultView);
+                detailed_list_layout.addView(questionView);
+
+                for (int i = 0; i < objects.get(position).getOptions().size(); i++) {
+
+                    CheckBox checkBox = new CheckBox(getApplicationContext());
+
+
+                    checkBox.setPadding(25,5,20, 5);
+                    checkBox.setTextColor(getResources().getColor(R.color.black));
+                    checkBox.setTextSize(18);
+
+                    detailed_list_layout.addView(checkBox);
+                    holder.options.add(checkBox);
+                }
+                //holder.optionImages = new ArrayList<ImageView>(objects.get(position).getOptions().size());
+                //holder.options = new ArrayList<TextView>(objects.get(position).getOptions().size());
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            //holder.textView1.setText(objects.get(position).getProp1());
+            //holder.textView2.setText(objects.get(position).getProp2());
+            holder.resultView.setText(objects.get(position).getResult());
+            holder.questionView.setText(objects.get(position).getQuestion());
+            for (int i = 0; i < objects.get(position).getOptions().size(); i++) {
+                holder.options.get(i).setText(objects.get(position).getOptions().get(i));
+                holder.options.get(i).setChecked(false);
+                holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.correct_symbol));
+            }
+            return convertView;
+        }
+    }
 }

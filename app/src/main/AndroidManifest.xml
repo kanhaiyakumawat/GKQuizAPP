@@ -62,6 +62,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kanhaiyakumawat.androidapps.latestgkquiz.MainActivity" />
         </activity>
+        <activity
+            android:name=".RapidFireRoundActivity"
+            android:label="@string/title_activity_rapid_fire_round"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kanhaiyakumawat.androidapps.latestgkquiz.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
