@@ -16,6 +16,7 @@
         android:background="@color/android_green"
         android:gravity="center"
         android:soundEffectsEnabled="true"
+        android:layout_above="@+id/adView"
         android:orientation="vertical">
 
         <TextView

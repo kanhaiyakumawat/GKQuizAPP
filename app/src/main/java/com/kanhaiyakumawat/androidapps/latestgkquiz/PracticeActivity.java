@@ -2,19 +2,17 @@ package com.kanhaiyakumawat.androidapps.latestgkquiz;
 
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View.OnClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -29,7 +27,6 @@ import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionDetails;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionType;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -94,62 +91,8 @@ public class PracticeActivity extends ActionBarActivity implements OnClickListen
                     "Your are done with all the questions!! check your answers",
                     Toast.LENGTH_LONG).show();
             linear_layout.removeAllViews();
-            TextView total_attempted_question = new TextView(
-                    getApplicationContext());
-            TextView total_answered_fully_correct = new TextView(
-                    getApplicationContext());
-            TextView total_amswered_partially_correct = new TextView(
-                    getApplicationContext());
-            TextView total_answered_wrong = new TextView(
-                    getApplicationContext());
-            TextView score = new TextView(getApplicationContext());
+            super.finish();
 
-            score.setText("----- Score Analysis ----");
-            score.setTextSize(16);
-            total_attempted_question.setText("Questions Attempted : "
-                    + num_of_questions_attempted);
-            total_attempted_question.setTextSize(12);
-            total_answered_fully_correct.setText("Answered fully correct : "
-                    + num_of_questions_answered_fully_correct);
-            total_answered_fully_correct.setTextSize(12);
-            total_amswered_partially_correct
-                    .setText("Answered partially correct : "
-                            + num_of_questions_answered_partially_correct);
-            total_amswered_partially_correct.setTextSize(12);
-            total_answered_wrong.setText("Answered Wrong : "
-                    + num_of_questions_answered_wrong);
-            total_answered_wrong.setTextSize(12);
-            score.setTextColor(getResources().getColor(R.color.black));
-            total_attempted_question.setTextColor(getResources().getColor(
-                    R.color.black));
-            total_answered_fully_correct.setTextColor(getResources().getColor(
-                    R.color.black));
-            total_amswered_partially_correct.setTextColor(getResources()
-                    .getColor(R.color.black));
-            total_answered_wrong.setTextColor(getResources().getColor(
-                    R.color.black));
-            Button exit = new Button(getApplicationContext());
-            exit.setText(R.string.exit_quiz);
-            exit.setId(getResources().getInteger(R.integer.exit_quiz_button_id));
-            exit.setOnClickListener(this);
-            exit.setBackgroundColor(getResources().getColor(R.color.Chocolate));
-            exit.setLayoutParams(lpButton);
-            exit.setBackground(getResources().getDrawable(R.drawable.button_background));
-            linear_layout.addView(score);
-            linear_layout.addView(total_attempted_question);
-            linear_layout.addView(total_answered_fully_correct);
-            linear_layout.addView(total_amswered_partially_correct);
-            linear_layout.addView(total_answered_wrong);
-            linear_layout.addView(exit);
-            Result result = new Result();
-            result.setDate(new Date());
-            result.setFully_correct(num_of_questions_answered_fully_correct);
-            result.setFully_wrong(num_of_questions_answered_wrong);
-            result.setPartially_correct(num_of_questions_answered_partially_correct);
-            result.setTotal_questions(num_of_questions_attempted);
-            PreviousResults previousResult = new PreviousResults(
-                    getApplicationContext());
-            previousResult.addResult(result);
         }
 
     }
@@ -246,9 +189,6 @@ public class PracticeActivity extends ActionBarActivity implements OnClickListen
                 Toast.makeText(getApplicationContext(), "Its Incorrect!!",
                         Toast.LENGTH_LONG).show();
             }
-            DatabaseHelper db = DatabaseHelper
-                    .getInstance(getApplicationContext());
-            db.updateUserAttempts(question);
 
             Button check_answer_button = (Button) findViewById(getResources().getInteger(R.integer.check_answer_button_id));
             linear_layout.removeView(check_answer_button);

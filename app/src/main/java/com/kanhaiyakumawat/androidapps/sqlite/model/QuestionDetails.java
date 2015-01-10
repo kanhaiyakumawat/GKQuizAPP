@@ -1,8 +1,8 @@
 package com.kanhaiyakumawat.androidapps.sqlite.model;
 
-import java.util.List;
-
 import android.util.Log;
+
+import java.util.List;
 
 public class QuestionDetails {
     private static final String LOG = "QuestionDetails";
@@ -11,7 +11,8 @@ public class QuestionDetails {
     private long userAttempts;
     private long successfulAttempts;
     private String questionType;
-    private boolean isCurrentAttempted;
+
+    private String currentAttemptStatus;
 
     private List<OptionDetails> optionDetails;
 
@@ -72,11 +73,14 @@ public class QuestionDetails {
         return true;
     }
 
-    public boolean isCurrentAttempted() {
-        return isCurrentAttempted;
+
+    public String getCurrentAttemptStatus() {
+        return currentAttemptStatus;
     }
 
-    public void setCurrentAttempted(boolean isCurrentAttempted) {
-        this.isCurrentAttempted = isCurrentAttempted;
+    public void setCurrentAttemptStatus(String currentAttemptStatus) {
+        this.currentAttemptStatus = currentAttemptStatus;
     }
+
+
 }

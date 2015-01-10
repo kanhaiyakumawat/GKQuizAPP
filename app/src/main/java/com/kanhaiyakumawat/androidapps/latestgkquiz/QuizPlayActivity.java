@@ -28,16 +28,19 @@ import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionType;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class QuizPlayActivity extends Activity implements OnClickListener {
 
     private static final String LOG = "QuizPlayActivity";
+    private  static final String CORRECT = "Correct";
+    private static final String WRONG = "Wrong";
+    private static final String SKIPPED = "Skipped";
+
     List<QuestionType> question_types;
     LinearLayout linear_layout;
     List<QuestionDetails> question_list;
-    List<QuestionDetails> attempted_list = new LinkedList<QuestionDetails>();
+    ArrayList<QuestionDetails> attempted_list = new ArrayList<QuestionDetails>();
 
     //private RelativeLayout.LayoutParams lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     private LayoutParams lpButton = new LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -127,7 +130,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                 DetailedResultObject detailedResultObject = new DetailedResultObject("[Right]", attempted_list.get(i).getQuestionText(), options);
                 detailedResultObjects.add(detailedResultObject);
             }
-            DetailedResultAdapter detailedResultAdapter = new DetailedResultAdapter(this, detailedResultObjects);
+            DetailedResultAdapter detailedResultAdapter = new DetailedResultAdapter(this, attempted_list);
             detailResults.setAdapter(detailedResultAdapter);
             detailedResultAdapter.notifyDataSetChanged();
             linear_layout.addView(detailResults);
@@ -187,10 +190,12 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
         } else if (arg0.getId() == getResources().getInteger(R.integer.next_question_button_id)) {
             boolean isCorrect = false;
             boolean isWrong = false;
+            boolean isSkipped = true;
             QuestionDetails curr_question = question_list.get(curr_question_id);
             for (int i = 0; i < num_of_options; i++) {
                 CheckBox cb = (CheckBox) findViewById(i + 1);
                 if (cb.isChecked()) {
+                    isSkipped = false;
                     curr_question.getOptionDetails().get(i).setAttempted(true);
                     Log.v(LOG,
                             " CheckBox is checked "
@@ -202,20 +207,14 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                     if (question_list.get(curr_question_id).getOptionDetails()
                             .get(i).isAnswer()) {
                         isCorrect = true;
-                        cb.setBackgroundColor(getResources().getColor(
-                                R.color.DarkGreen));
                     } else {
                         isWrong = true;
-                        cb.setBackgroundColor(getResources().getColor(
-                                R.color.red));
                     }
 
                 } else {
                     if (question_list.get(curr_question_id).getOptionDetails()
                             .get(i).isAnswer()) {
                         isWrong = true;
-                        cb.setBackgroundColor(getResources().getColor(
-                                R.color.DarkOrange));
                     } else {
                         // cb.setBackgroundColor();
                     }
@@ -225,15 +224,22 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             question.setUserAttempts(question.getUserAttempts() + 1);
             attempted_list.add(curr_question);
             if (isCorrect && isWrong == false) {
+                question.setCurrentAttemptStatus(CORRECT);
                 num_of_questions_answered_fully_correct++;
 
                 question.setSuccessfulAttempts(question.getSuccessfulAttempts() + 1);
             } else if (isCorrect && isWrong == true) {
                 num_of_questions_answered_partially_correct++;
+                question.setCurrentAttemptStatus(WRONG);
 
             } else {
                 num_of_questions_answered_wrong++;
+                question.setCurrentAttemptStatus(WRONG);
             }
+            if(isSkipped){
+                question.setCurrentAttemptStatus(SKIPPED);
+            }
+
             DatabaseHelper db = DatabaseHelper
                     .getInstance(getApplicationContext());
             db.updateUserAttempts(question);
@@ -394,7 +400,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
     public class DetailedResultAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
-        private ArrayList<DetailedResultObject> objects;
+        private ArrayList<QuestionDetails> objects;
 
 
 
@@ -404,7 +410,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             List<CheckBox> options;
         }
 
-        public DetailedResultAdapter(Context context, ArrayList<DetailedResultObject> objects) {
+        public DetailedResultAdapter(Context context, ArrayList<QuestionDetails> objects) {
             inflater = LayoutInflater.from(context);
             this.objects = objects;
 
@@ -414,7 +420,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             return objects.size();
         }
 
-        public DetailedResultObject getItem(int position) {
+        public QuestionDetails getItem(int position) {
             return objects.get(position);
         }
 
@@ -441,11 +447,11 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
 
 
                 holder.resultView = resultView;
-                holder.options = new ArrayList<CheckBox>(objects.get(position).getOptions().size());
+                holder.options = new ArrayList<CheckBox>(objects.get(position).getOptionDetails().size());
                 detailed_list_layout.addView(resultView);
                 detailed_list_layout.addView(questionView);
 
-                for (int i = 0; i < objects.get(position).getOptions().size(); i++) {
+                for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
 
                     CheckBox checkBox = new CheckBox(getApplicationContext());
 
@@ -465,12 +471,30 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
             }
             //holder.textView1.setText(objects.get(position).getProp1());
             //holder.textView2.setText(objects.get(position).getProp2());
-            holder.resultView.setText(objects.get(position).getResult());
-            holder.questionView.setText(objects.get(position).getQuestion());
-            for (int i = 0; i < objects.get(position).getOptions().size(); i++) {
-                holder.options.get(i).setText(objects.get(position).getOptions().get(i));
+            holder.resultView.setText("[" + objects.get(position).getCurrentAttemptStatus() + "]");
+            if(objects.get(position).getCurrentAttemptStatus() == CORRECT)
+            {
+                holder.resultView.setTextColor(getResources().getColor(R.color.green));
+            }
+            else
+            {
+                holder.resultView.setTextColor(getResources().getColor(R.color.red));
+            }
+            holder.questionView.setText(objects.get(position).getQuestionText());
+            for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
+                holder.options.get(i).setText(objects.get(position).getOptionDetails().get(i).getText());
                 holder.options.get(i).setChecked(false);
-                holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.correct_symbol));
+                if(objects.get(position).getOptionDetails().get(i).isAnswer()) {
+                    holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.correct_symbol));
+                }
+                else if(objects.get(position).getOptionDetails().get(i).isAttempted())
+                {
+                    holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.wrong_symbol));
+                }
+                else {
+                    holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.empty_check_box_symbol));
+                }
+                holder.options.get(i).setEnabled(false);
             }
             return convertView;
         }
