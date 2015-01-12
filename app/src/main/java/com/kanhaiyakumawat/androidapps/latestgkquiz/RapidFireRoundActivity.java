@@ -505,44 +505,41 @@ public class RapidFireRoundActivity extends Activity implements OnClickListener 
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.v(LOG, "getView for results");
             ViewHolder holder = null;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.detailed_result_list_layout, null);
-                LinearLayout detailed_list_layout = (LinearLayout) convertView.findViewById(R.id.detailed_list_layout);
-                TextView resultView = new TextView(getApplicationContext());
-                resultView.setTextColor(getResources().getColor(R.color.black));
-                resultView.setTextSize(24);
-                resultView.setPadding(12, 12, 12, 5);
-                TextView questionView = new TextView(getApplicationContext());
-                questionView.setTextColor(getResources().getColor(R.color.black));
-                questionView.setTextSize(24);
-                questionView.setPadding(12, 12, 12, 12);
-                holder.questionView = questionView;
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.detailed_result_list_layout, null);
+            LinearLayout detailed_list_layout = (LinearLayout) convertView.findViewById(R.id.detailed_list_layout);
+            TextView resultView = new TextView(getApplicationContext());
+            resultView.setTextColor(getResources().getColor(R.color.black));
+            resultView.setTextSize(24);
+            resultView.setPadding(12, 12, 12, 5);
+            TextView questionView = new TextView(getApplicationContext());
+            questionView.setTextColor(getResources().getColor(R.color.black));
+            questionView.setTextSize(24);
+            questionView.setPadding(12, 12, 12, 12);
+            holder.questionView = questionView;
 
 
-                holder.resultView = resultView;
-                holder.options = new ArrayList<CheckBox>(objects.get(position).getOptionDetails().size());
-                detailed_list_layout.addView(resultView);
-                detailed_list_layout.addView(questionView);
+            holder.resultView = resultView;
+            holder.options = new ArrayList<CheckBox>(objects.get(position).getOptionDetails().size());
+            detailed_list_layout.addView(resultView);
+            detailed_list_layout.addView(questionView);
 
-                for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
+            for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
 
-                    CheckBox checkBox = new CheckBox(getApplicationContext());
+                CheckBox checkBox = new CheckBox(getApplicationContext());
 
 
-                    checkBox.setPadding(25, 5, 20, 5);
-                    checkBox.setTextColor(getResources().getColor(R.color.black));
-                    checkBox.setTextSize(18);
+                checkBox.setPadding(25, 5, 20, 5);
+                checkBox.setTextColor(getResources().getColor(R.color.black));
+                checkBox.setTextSize(18);
 
-                    detailed_list_layout.addView(checkBox);
-                    holder.options.add(checkBox);
-                }
-                //holder.optionImages = new ArrayList<ImageView>(objects.get(position).getOptions().size());
-                //holder.options = new ArrayList<TextView>(objects.get(position).getOptions().size());
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
+                detailed_list_layout.addView(checkBox);
+                holder.options.add(checkBox);
             }
+            //holder.optionImages = new ArrayList<ImageView>(objects.get(position).getOptions().size());
+            //holder.options = new ArrayList<TextView>(objects.get(position).getOptions().size());
+            convertView.setTag(holder);
+
             //holder.textView1.setText(objects.get(position).getProp1());
             //holder.textView2.setText(objects.get(position).getProp2());
             holder.resultView.setText("[" + objects.get(position).getCurrentAttemptStatus() + "]");

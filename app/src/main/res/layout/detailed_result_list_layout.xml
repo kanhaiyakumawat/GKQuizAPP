@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    android:divider="@color/DarkViolet">
+    android:divider="@color/DarkViolet"
+    android:dividerPadding="5dp"
+    android:focusableInTouchMode="true"
+    android:padding="10dp"
+    android:paddingEnd="10dp"
+    android:background="#6DA592">
 
 
 </LinearLayout>

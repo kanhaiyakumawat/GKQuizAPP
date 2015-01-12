@@ -33,7 +33,7 @@ import java.util.List;
 public class QuizPlayActivity extends Activity implements OnClickListener {
 
     private static final String LOG = "QuizPlayActivity";
-    private  static final String CORRECT = "Correct";
+    private static final String CORRECT = "Correct";
     private static final String WRONG = "Wrong";
     private static final String SKIPPED = "Skipped";
 
@@ -236,7 +236,7 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
                 num_of_questions_answered_wrong++;
                 question.setCurrentAttemptStatus(WRONG);
             }
-            if(isSkipped){
+            if (isSkipped) {
                 question.setCurrentAttemptStatus(SKIPPED);
             }
 
@@ -403,7 +403,6 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
         private ArrayList<QuestionDetails> objects;
 
 
-
         private class ViewHolder {
             TextView resultView;
             TextView questionView;
@@ -431,70 +430,66 @@ public class QuizPlayActivity extends Activity implements OnClickListener {
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.v(LOG, "getView for results");
             ViewHolder holder = null;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.detailed_result_list_layout, null);
-                LinearLayout detailed_list_layout = (LinearLayout)convertView.findViewById(R.id.detailed_list_layout);
-                TextView resultView = new TextView(getApplicationContext());
-                resultView.setTextColor(getResources().getColor(R.color.black));
-                resultView.setTextSize(24);
-                resultView.setPadding(12,12,12,5);
-                TextView questionView = new TextView(getApplicationContext());
-                questionView.setTextColor(getResources().getColor(R.color.black));
-                questionView.setTextSize(24);
-                questionView.setPadding(12,12,12,12);
-                holder.questionView = questionView;
+
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.detailed_result_list_layout, null);
+            LinearLayout detailed_list_layout = (LinearLayout) convertView.findViewById(R.id.detailed_list_layout);
+            TextView resultView = new TextView(getApplicationContext());
+            resultView.setTextColor(getResources().getColor(R.color.black));
+            resultView.setTextSize(24);
+            resultView.setPadding(12, 12, 12, 5);
+            TextView questionView = new TextView(getApplicationContext());
+            questionView.setTextColor(getResources().getColor(R.color.black));
+            questionView.setTextSize(24);
+            questionView.setPadding(12, 12, 12, 12);
+            holder.questionView = questionView;
 
 
-                holder.resultView = resultView;
-                holder.options = new ArrayList<CheckBox>(objects.get(position).getOptionDetails().size());
-                detailed_list_layout.addView(resultView);
-                detailed_list_layout.addView(questionView);
+            holder.resultView = resultView;
+            holder.options = new ArrayList<CheckBox>(objects.get(position).getOptionDetails().size());
+            detailed_list_layout.addView(resultView);
+            detailed_list_layout.addView(questionView);
 
-                for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
+            for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
 
-                    CheckBox checkBox = new CheckBox(getApplicationContext());
+                CheckBox checkBox = new CheckBox(getApplicationContext());
 
 
-                    checkBox.setPadding(25,5,20, 5);
-                    checkBox.setTextColor(getResources().getColor(R.color.black));
-                    checkBox.setTextSize(18);
+                checkBox.setPadding(25, 5, 20, 5);
+                checkBox.setTextColor(getResources().getColor(R.color.black));
+                checkBox.setTextSize(18);
 
-                    detailed_list_layout.addView(checkBox);
-                    holder.options.add(checkBox);
-                }
-                //holder.optionImages = new ArrayList<ImageView>(objects.get(position).getOptions().size());
-                //holder.options = new ArrayList<TextView>(objects.get(position).getOptions().size());
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
+                detailed_list_layout.addView(checkBox);
+                holder.options.add(checkBox);
             }
+            //holder.optionImages = new ArrayList<ImageView>(objects.get(position).getOptions().size());
+            //holder.options = new ArrayList<TextView>(objects.get(position).getOptions().size());
+            convertView.setTag(holder);
+
             //holder.textView1.setText(objects.get(position).getProp1());
             //holder.textView2.setText(objects.get(position).getProp2());
             holder.resultView.setText("[" + objects.get(position).getCurrentAttemptStatus() + "]");
-            if(objects.get(position).getCurrentAttemptStatus() == CORRECT)
-            {
+            if (objects.get(position).getCurrentAttemptStatus() == CORRECT) {
                 holder.resultView.setTextColor(getResources().getColor(R.color.green));
-            }
-            else
-            {
+            } else {
                 holder.resultView.setTextColor(getResources().getColor(R.color.red));
             }
-            holder.questionView.setText(objects.get(position).getQuestionText());
+            holder.questionView.setText("Q" + (position + 1) + ". " + objects.get(position).getQuestionText());
+            char op = 'A';
             for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
-                holder.options.get(i).setText(objects.get(position).getOptionDetails().get(i).getText());
+                Log.v(LOG, "holder options size " + holder.options.size() + " and options from object " + objects.get(position).getOptionDetails().size());
+                holder.options.get(i).setText("(" + op + ") " + objects.get(position).getOptionDetails().get(i).getText());
                 holder.options.get(i).setChecked(false);
-                if(objects.get(position).getOptionDetails().get(i).isAnswer()) {
+
+                if (objects.get(position).getOptionDetails().get(i).isAnswer()) {
                     holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.correct_symbol));
-                }
-                else if(objects.get(position).getOptionDetails().get(i).isAttempted())
-                {
+                } else if (objects.get(position).getOptionDetails().get(i).isAttempted()) {
                     holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.wrong_symbol));
-                }
-                else {
+                } else {
                     holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.empty_check_box_symbol));
                 }
                 holder.options.get(i).setEnabled(false);
+                op++;
             }
             return convertView;
         }

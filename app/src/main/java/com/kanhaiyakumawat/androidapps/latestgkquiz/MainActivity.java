@@ -1,12 +1,5 @@
 package com.kanhaiyakumawat.androidapps.latestgkquiz;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +22,13 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.kanhaiyakumawat.androidapps.sqlite.helper.DatabaseHelper;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionDetails;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionType;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener {
 
@@ -123,8 +123,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 				List<QuestionType> questionTypes = questionTypeParser
 						.getQuestionTypeList();
 				Log.v(LOG, Long.toString(max_db_ques_id));
-				if (max_db_ques_id < (questionTypes.size() - 1)) {
-					Log.v(LOG, "max db id is less than new size");
+
 					List<QuestionType> existing_types = databaseHelper
 							.getAllQuestionTypes();
 					HashMap<String, QuestionType> existing_sets = new HashMap<String, QuestionType>();
@@ -171,7 +170,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 							Log.v(LOG, "inserting of new type is done");
 						}
 					}
-				}
+
 			} catch (Exception ex) {
 				Log.v("EXCEPTION", ex.getMessage());
 				isCompleteSuccess = false;

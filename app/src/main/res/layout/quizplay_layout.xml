@@ -11,7 +11,6 @@
         android:id="@+id/home_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/android_green"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
