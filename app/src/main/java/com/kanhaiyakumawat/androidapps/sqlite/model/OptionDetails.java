@@ -47,7 +47,7 @@ public class OptionDetails {
 	}
 	public boolean isValid()
 	{
-		if(optionId <= 0 || questionId <= 0 || text == null)
+		if(text == null)
 		{
 			Log.v(LOG, "questionId " + questionId + " and text is "+ text);
 			return false;

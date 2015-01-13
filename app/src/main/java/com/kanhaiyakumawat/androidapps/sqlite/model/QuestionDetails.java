@@ -65,7 +65,7 @@ public class QuestionDetails {
     }
 
     public boolean isValid() {
-        if (questionId == 0 || questionText == null || userAttempts < 0 || successfulAttempts < 0) {
+        if (questionText == null || userAttempts < 0 || successfulAttempts < 0) {
             Log.v(LOG, "Question Details invalid");
             return false;
         }

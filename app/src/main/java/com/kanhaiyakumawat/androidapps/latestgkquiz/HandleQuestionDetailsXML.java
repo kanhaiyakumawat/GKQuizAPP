@@ -1,27 +1,24 @@
 package com.kanhaiyakumawat.androidapps.latestgkquiz;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import android.util.Log;
 
 import com.kanhaiyakumawat.androidapps.sqlite.model.OptionDetails;
 import com.kanhaiyakumawat.androidapps.sqlite.model.QuestionDetails;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HandleQuestionDetailsXML {
 
 	private static final String QUESTION_DETAILS_LIST_TAG = "QuestionDetailsList";
 	private static final String QUESTION_DETAILS_TAG = "QuestionDetails";
-	private static final String QUESTION_INFO_TAG = "QuestionInfo";
-	private static final String QUESTION_ID_TAG = "questionId";
 	private static final String QUESTION_TAG = "question";
 	private static final String OPTION_INFO_TAG = "OptionInfo";
-	private static final String OPTION_TAG = "Option";
-	private static final String OPTION_ID_TAG = "optionId";
+	private static final String OPTION_TAG = "Option";;
 	private static final String OPTION_TEXT_TAG = "text";
 	private static final String IS_ANSWER_TAG = "isAnswer";
 	private static final String LOG = "HandleQuestionDetailsXML";
@@ -50,9 +47,7 @@ public class HandleQuestionDetailsXML {
 
 		Log.v(LOG, "-- START --");
 		int event;
-		int questionId = 0;
 		String question = null;
-		int optionId = 0;
 		String optionText = null;
 		boolean isAnswer = false;
 		String text = null;
@@ -92,24 +87,17 @@ public class HandleQuestionDetailsXML {
 				case XmlPullParser.END_TAG:
 					Log.v(LOG, "parsing tag " + tag_name + " and text is "
 							+ text);
-					if (tag_name.equals(QUESTION_ID_TAG)) {
-						questionId = Integer.parseInt(text);
-					} else if (tag_name.equals(QUESTION_TAG)) {
+					if (tag_name.equals(QUESTION_TAG)) {
 						question = text;
-					} else if (tag_name.equals(OPTION_ID_TAG)) {
-						optionId = Integer.parseInt(text);
-					} else if (tag_name.equals(OPTION_TEXT_TAG)) {
+					}else if (tag_name.equals(OPTION_TEXT_TAG)) {
 						optionText = text;
 					} else if (tag_name.equals(IS_ANSWER_TAG)) {
 						isAnswer = text.equals("true") ? true : false;
 					} else if (tag_name.equals(OPTION_TAG)) {
 						if (hasOptionStarted) {
-							Log.v(LOG, "Option tag for question id "
-									+ questionId + " and option id " + optionId
+							Log.v(LOG, "Option tag"
 									+ " is it answer " + isAnswer);
 							OptionDetails option = new OptionDetails();
-							option.setOptionId(optionId);
-							option.setQuestionId(questionId);
 							option.setText(optionText);
 							option.setAnswer(isAnswer);
 							if (option.isValid()) {
@@ -118,7 +106,6 @@ public class HandleQuestionDetailsXML {
 								Log.v(LOG, "option is invalid");
 								return false;
 							}
-							optionId = 0;
 							isAnswer = false;
 							optionText = null;
 							hasOptionStarted = false;
@@ -134,10 +121,8 @@ public class HandleQuestionDetailsXML {
 						}
 					} else if (tag_name.equals(QUESTION_DETAILS_TAG)) {
 						if (hasQuestionDetailsStarted) {
-							Log.v(LOG, "Got Question Details for quextion id: "
-									+ questionId);
+							Log.v(LOG, "Got Question Details for quextion");
 							QuestionDetails questionDetails = new QuestionDetails();
-							questionDetails.setQuestionId(questionId);
 							questionDetails.setQuestionText(question);
 							questionDetails.setUserAttempts(0);
 							questionDetails.setUserAttempts(0);
@@ -156,9 +141,7 @@ public class HandleQuestionDetailsXML {
 						} else {
 							return false;
 						}
-					} else if (tag_name.equals(QUESTION_INFO_TAG)) {
-						// do nothing
-					} else {
+					}else {
 						Log.v(LOG, "unknown tag " + tag_name);
 					}
 					break;
