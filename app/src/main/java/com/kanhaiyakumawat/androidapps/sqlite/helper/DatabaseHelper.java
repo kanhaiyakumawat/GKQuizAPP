@@ -177,10 +177,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_QUESTION_TYPE, values, whereClause, null);
     }
 
-    public boolean createQuestionDetails(QuestionDetails quesitonDetails) {
+    public boolean createQuestionDetails(QuestionDetails questionDetails) {
         Log.v(LOG, "createQuestionDetails");
-        if (questionIdExists(quesitonDetails.getQuestionId())) {
-            Log.v(LOG, "row already exists so returning");
+        if (questionIdExists(questionDetails.getQuestionId())) {
+            Log.v(LOG, "row already exists so returning question Id " + questionDetails.getQuestionId());
             return true;
         }
         SQLiteDatabase db = this.getWritableDatabase();
@@ -188,20 +188,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.beginTransaction();
             ContentValues question_values = new ContentValues();
             question_values.put(TABLE_COLUMN_QUESTION_ID,
-                    quesitonDetails.getQuestionId());
+                    questionDetails.getQuestionId());
             question_values.put(TABLE_COLUMN_QUESTION_TYPE,
-                    quesitonDetails.getQuestionType());
+                    questionDetails.getQuestionType());
             question_values.put(TABLE_COLUMN_QUESTION_TEXT,
-                    quesitonDetails.getQuestionText());
+                    questionDetails.getQuestionText());
             question_values.put(TABLE_COLUMN_USER_ATTEMPTS,
-                    quesitonDetails.getUserAttempts());
+                    questionDetails.getUserAttempts());
             question_values.put(TABLE_COLUMN_USER_SUCCESSFUL_ATTEMPTS,
-                    quesitonDetails.getSuccessfulAttempts());
-            List<OptionDetails> options = quesitonDetails.getOptionDetails();
+                    questionDetails.getSuccessfulAttempts());
+            List<OptionDetails> options = questionDetails.getOptionDetails();
             ContentValues option_values = new ContentValues();
             for (int i = 0; i < options.size(); i++) {
                 option_values.put(TABLE_COLUMN_QUESTION_ID,
-                        quesitonDetails.getQuestionId());
+                        questionDetails.getQuestionId());
                 option_values.put(TABLE_COLUMN_OPTION_TEXT, options.get(i)
                         .getText());
                 int answer = options.get(i).isAnswer() ? 1 : 0;
@@ -220,6 +220,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean createQuestionDetails(List<QuestionDetails> questionDetailsList, QuestionType questionType) {
         Log.v(LOG, "createQuestionDetails Updated");
+
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             db.beginTransaction();
@@ -229,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 QuestionDetails questionDetails = questionDetailsList.get(j);
                 ContentValues question_values = new ContentValues();
                 question_values.put(TABLE_COLUMN_QUESTION_TYPE,
-                        questionDetails.getQuestionType());
+                        questionType.getQuestionType());
                 question_values.put(TABLE_COLUMN_QUESTION_TEXT,
                         questionDetails.getQuestionText());
                 question_values.put(TABLE_COLUMN_USER_ATTEMPTS,

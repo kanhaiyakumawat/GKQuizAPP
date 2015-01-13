@@ -69,12 +69,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 							.getQuestionDetailsList();
 					Log.v(LOG, "got the question details total questions are "
 							+ questionDetailsList.size());
-					for (int i = 0; i < questionDetailsList.size(); i++) {
+                    dbHelper.createQuestionDetails(questionDetailsList,topic);
+					/*for (int i = 0; i < questionDetailsList.size(); i++) {
 						questionDetailsList.get(i).setQuestionType(
 								topic.getQuestionType());
 						dbHelper.createQuestionDetails(questionDetailsList
 								.get(i));
-					}
+					}*/
 				} else {
 					Log.v(LOG, "invalid XML");
 					return false;
