@@ -548,9 +548,10 @@ public class RapidFireRoundActivity extends Activity implements OnClickListener 
             } else {
                 holder.resultView.setTextColor(getResources().getColor(R.color.red));
             }
-            holder.questionView.setText(objects.get(position).getQuestionText());
+            holder.questionView.setText("Q" + (position + 1) + ". " + objects.get(position).getQuestionText());
+            char op = 'A';
             for (int i = 0; i < objects.get(position).getOptionDetails().size(); i++) {
-                holder.options.get(i).setText(objects.get(position).getOptionDetails().get(i).getText());
+                holder.options.get(i).setText("(" + op + ") " + objects.get(position).getOptionDetails().get(i).getText());
                 holder.options.get(i).setChecked(false);
                 if (objects.get(position).getOptionDetails().get(i).isAnswer()) {
                     holder.options.get(i).setButtonDrawable(getResources().getDrawable(R.drawable.correct_symbol));

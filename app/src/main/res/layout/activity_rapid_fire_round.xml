@@ -1,22 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rapid_fire_round"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/android_green"
-    android:soundEffectsEnabled="true"
-    tools:context="com.kanhaiyakumawat.androidapps.latestgkquiz.RapidFireRoundActivity"
-    tools:ignore="MergeRootFrame">
+    android:orientation="vertical"
+    android:textAlignment="gravity" >
 
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/android_green"
-        android:gravity="center"
-        android:soundEffectsEnabled="true"
         android:layout_above="@+id/adView"
+        android:background="@color/android_green"
+        android:gravity="center_horizontal"
+        android:soundEffectsEnabled="true"
         android:orientation="vertical">
 
         <TextView
@@ -33,7 +31,6 @@
             android:id="@+id/home_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/adView"
             android:layout_alignParentTop="true"
             android:background="@color/android_green"
             android:gravity="center"
@@ -56,10 +53,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal|bottom"
         ads:adSize="BANNER"
         ads:adUnitId="@string/my_unit_id" />
 
-
-</FrameLayout>
+</RelativeLayout>
 

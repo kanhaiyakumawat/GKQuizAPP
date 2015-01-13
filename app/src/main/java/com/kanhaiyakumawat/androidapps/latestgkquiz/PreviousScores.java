@@ -123,6 +123,7 @@ public class PreviousScores extends ActionBarActivity implements
 		exit.setId(exit_score_button_id);
 		exit.setOnClickListener(this);
 		exit.setBackgroundColor(getResources().getColor(R.color.Chocolate));
+        exit.setBackground(getResources().getDrawable(R.drawable.button_background));
 		// RelativeLayout.LayoutParams lpButton = new
 		// LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
 		tableLayout.addView(exit);

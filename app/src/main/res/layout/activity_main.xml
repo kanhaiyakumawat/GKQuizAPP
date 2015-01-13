@@ -95,7 +95,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:theme="@android:style/Theme.Translucent"
         ads:adSize="BANNER"
         ads:adUnitId="@string/my_unit_id"
         android:background="@color/LightSteelBlue" />
